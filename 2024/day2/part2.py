@@ -22,7 +22,7 @@ def count_safe(array) -> int:
 
     def is_safe_with_one_error(row):
         for i in range(len(row)):
-            if is_safe(row[:i] + row[(i + 1):]):
+            if is_safe(row[:i] + row[(i + 1) :]):
                 return True
 
         return False
