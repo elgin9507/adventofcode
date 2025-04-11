@@ -18,8 +18,7 @@ def main():
 
 
 def print_cells(cells: list[list[int]]) -> None:
-    for i, row in enumerate(cells):
-        print(f"{i:<2}", end="")
+    for row in cells:
         for c in row:
             print(c, end="")
         print()
@@ -112,28 +111,17 @@ def traverse(
             return
         case ".":
             return
-        case "[":
+        case "[" | "]":
             cells_to_move.append(next_loc)
 
             match direction:
                 case ">" | "<":
                     closing_bracket_loc = get_next_loc(next_loc, direction)
                 case "^" | "v":
-                    closing_bracket_loc = get_next_loc(next_loc, ">")
-
-            cells_to_move.append(closing_bracket_loc)
-            traverse(cells, next_loc, direction, cells_to_move, traverse_state)
-            traverse(
-                cells, closing_bracket_loc, direction, cells_to_move, traverse_state
-            )
-        case "]":
-            cells_to_move.append(next_loc)
-
-            match direction:
-                case ">" | "<":
-                    closing_bracket_loc = get_next_loc(next_loc, direction)
-                case "^" | "v":
-                    closing_bracket_loc = get_next_loc(next_loc, "<")
+                    if next_char == "[":
+                        closing_bracket_loc = get_next_loc(next_loc, ">")
+                    else:
+                        closing_bracket_loc = get_next_loc(next_loc, "<")
 
             cells_to_move.append(closing_bracket_loc)
             traverse(cells, next_loc, direction, cells_to_move, traverse_state)
