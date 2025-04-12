@@ -6,8 +6,17 @@ sys.setrecursionlimit(15000)
 def main():
     map_data = parse_input()
     scores = []
+    prev_loc = (
+        map_data["start"][0],
+        map_data["start"][1] - 1,
+    )  # because start Tile is facing East
     traverse(
-        map_data["cells"], map_data["start"], None, 0, {map_data["start"]: 0}, scores
+        map_data["cells"],
+        map_data["start"],
+        prev_loc,
+        0,
+        {map_data["start"]: 0},
+        scores,
     )
 
     return min(scores)
@@ -51,7 +60,7 @@ def print_cells(cells: list[list[int]]) -> None:
 def traverse(
     cells: list[list[int]],
     loc: tuple[int],
-    prev_loc: tuple[int] | None,
+    prev_loc: tuple[int],
     curr_score: int,
     visited: set[tuple[int]],
     scores: list[int],
@@ -92,18 +101,15 @@ def get_next_loc(curr_loc: tuple[int], direction: str) -> tuple[int]:
     return next_loc
 
 
-def calc_score(
-    prev_loc: tuple[int] | None, curr_loc: tuple[int], next_loc: tuple[int]
-) -> int:
+def calc_score(prev_loc: tuple[int], curr_loc: tuple[int], next_loc: tuple[int]) -> int:
     score = 1
 
-    if prev_loc is not None:
-        if prev_loc[0] == curr_loc[0]:
-            if curr_loc[0] != next_loc[0]:
-                score += 1000
-        else:  # prev_loc[1] == curr_loc[1]:
-            if curr_loc[1] != next_loc[1]:
-                score += 1000
+    if prev_loc[0] == curr_loc[0]:
+        if curr_loc[0] != next_loc[0]:
+            score += 1000
+    else:  # prev_loc[1] == curr_loc[1]:
+        if curr_loc[1] != next_loc[1]:
+            score += 1000
 
     return score
 
